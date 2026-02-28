@@ -37,10 +37,10 @@ If no modifier character is present, only two hexadecimal digits follow; otherwi
 | Initiator | Modifier   | Digit Count | Example                         |
 |-----------|------------|-------------|---------------------------------|
 | `^`       |            | 2           | `^2F` (`/`)                     |
-| `^`       | `g` or `G` | 3           | `^g141` (`Ł`)                   |
-| `^`       | `h` or `H` | 4           | `^h2021` (`‡`)                  |
-| `^`       | `i` or `I` | 5           | `^i1D120` (`𝄠`)                 |
-| `^`       | `j` or `J` | 6           | `^j10ABCD` (user-defined value) |
+| `^`       | `w` or `W` | 3           | `^w141` (`Ł`)                   |
+| `^`       | `x` or `X` | 4           | `^x2021` (`‡`)                  |
+| `^`       | `y` or `Y` | 5           | `^y1D120` (`𝄠`)                 |
+| `^`       | `z` or `Z` | 6           | `^z10ABCD` (user-defined value) |
 
 ### Encoding Rules
 
@@ -95,9 +95,9 @@ Below is a table of all non-alphanumeric characters from codepoint u+0020 to u+0
 
 ### Examples
 
-* `^h5927^h5207^h306A^h30D5^h30A1^h30A4^h30EB.doc` (`大切なファイル.doc`)
+* `^x5927^x5207^x306A^x30D5^x30A1^x30A4^x30EB.doc` (`大切なファイル.doc`)
 * `^22secret^22-data.bin` (`"secret"-data.bin`)
-* `^i1F607.txt` (`😇.txt`)
+* `^y1F607.txt` (`😇.txt`)
 
 
 
@@ -133,20 +133,20 @@ dogma_v1 utf-8
 - dogma       = https://github.com/kstenerud/dogma/blob/master/v1/dogma_v1.0.md
 
 encoded_codepoint = initiator
-                  & var(type, (G | H | I | J)?)
+                  & var(type, (W | X | Y | Z)?)
                   & hex_digit{2}
                   & [
-                         type = G: hex_digit{1};
-                         type = H: hex_digit{2};
-                         type = I: hex_digit{3};
-                         type = J: hex_digit{4};
+                         type = W: hex_digit{1};
+                         type = X: hex_digit{2};
+                         type = Y: hex_digit{3};
+                         type = Z: hex_digit{4};
                   ];
 
 initiator         = '^';
-G                 = 'g' | 'G';
-H                 = 'h' | 'H';
-I                 = 'i' | 'I';
-J                 = 'j' | 'J';
+W                 = 'w' | 'W';
+X                 = 'x' | 'X';
+Y                 = 'y' | 'Y';
+Z                 = 'z' | 'Z';
 hex_digit         = '0'~'9' | 'a'~'f' | 'A'~'F';
 ```
 

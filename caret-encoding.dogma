@@ -5,18 +5,18 @@ dogma_v1 utf-8
 - dogma       = https://github.com/kstenerud/dogma/blob/master/v1/dogma_v1.0.md
 
 encoded_codepoint = initiator
-                  & var(type, (G | H | I | J)?)
+                  & var(type, (W | X | Y | Z)?)
                   & hex_digit{2}
                   & [
-                         type = G: hex_digit{1};
-                         type = H: hex_digit{2};
-                         type = I: hex_digit{3};
-                         type = J: hex_digit{4};
+                         type = W: hex_digit{1};
+                         type = X: hex_digit{2};
+                         type = Y: hex_digit{3};
+                         type = Z: hex_digit{4};
                   ];
 
 initiator         = '^';
-G                 = 'g' | 'G';
-H                 = 'h' | 'H';
-I                 = 'i' | 'I';
-J                 = 'j' | 'J';
+W                 = 'w' | 'W';
+X                 = 'x' | 'X';
+Y                 = 'y' | 'Y';
+Z                 = 'z' | 'Z';
 hex_digit         = '0'~'9' | 'a'~'f' | 'A'~'F';
