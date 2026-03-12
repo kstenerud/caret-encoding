@@ -89,7 +89,7 @@ Below is a table of all non-alphanumeric characters from codepoint u+0020 to u+0
 
 | Codepoint | Symbol | Issue       | Context                                             |
 |-----------|--------|-------------|-----------------------------------------------------|
-|  u+0020   |  ` `   | Problematic | Windows doesn't allow leading or trailing spaces    |
+|  u+0020   |  ` `   | Problematic | Windows FS: Leading and trailing spaces forbidden   |
 |  u+0021   |   !    | Reserved    | URI                                                 |
 |  u+0022   |   "    | Reserved    | Windows FS, IBM FS                                  |
 |  u+0023   |   #    | Reserved    | URI, Sharepoint, problematic for IBM FS             |
@@ -103,7 +103,7 @@ Below is a table of all non-alphanumeric characters from codepoint u+0020 to u+0
 |  u+002b   |   +    | Reserved    | URI                                                 |
 |  u+002c   |   ,    | Reserved    | URI                                                 |
 |  u+002d   |   -    | Safe        |                                                     |
-|  u+002e   |   .    | Problematic | Windows doesn't allow a directory to end with `.`   |
+|  u+002e   |   .    | Problematic | Windows FS: Directory name must not end with `.`    |
 |  u+002f   |   /    | Reserved    | URI, Windows FS, Unix FS                            |
 |  u+003a   |   :    | Reserved    | URI, Windows FS                                     |
 |  u+003b   |   ;    | Reserved    | URI, problematic in Sharepoint                      |
@@ -121,7 +121,7 @@ Below is a table of all non-alphanumeric characters from codepoint u+0020 to u+0
 |  u+007b   |   {    | Safe        |                                                     |
 |  u+007c   |   \|   | Reserved    | Windows FS                                          |
 |  u+007d   |   }    | Safe        |                                                     |
-|  u+007e   |   ~    | Problematic | Files beginning with `~$` are restricted on Windows |
+|  u+007e   |   ~    | Problematic | Windows FS: Files beginning with `~$` are forbidden |
 
 - Codepoints marked "Reserved" **MUST** be encoded.
 - Codepoints marked "Problematic" **MUST** be encoded in the problematic situation.
