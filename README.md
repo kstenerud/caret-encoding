@@ -79,10 +79,10 @@ Decoders **MUST** recognize both shortcut and hex forms. Encoders **CAN** use ei
 ### Encoding Rules
 
 - Any Unicode codepoint **CAN** be encoded.
-- All codepoints from u+0000 to u+001F, and u+007F (C0 control characters) **MUST** be encoded.
-- All codepoints from u+0080 to u+009F (C1 control characters) **MUST** be encoded.
-- All codepoints from u+D800 to u+DFFF (surrogates) **MUST** be encoded.
-- All non-characters **MUST** be encoded: u+FDD0 to u+FDEF, and the last two codepoints of each plane (u+FFFE, u+FFFF, u+1FFFE, u+1FFFF, ... u+10FFFE, u+10FFFF).
+- All codepoints from **u+0000** to **u+001F**, and **u+007F** (C0 control characters) **MUST** be encoded.
+- All codepoints from **u+0080** to **u+009F** (C1 control characters) **MUST** be encoded.
+- All codepoints from **u+D800** to **u+DFFF** (surrogates) **MUST** be encoded.
+- All non-characters **MUST** be encoded: **u+FDD0** to **u+FDEF**, and the last two codepoints of each plane (**u+FFFE, u+FFFF, u+1FFFE, u+1FFFF, ... u+10FFFE, u+10FFFF**).
 - Most non-alphanumeric characters below codepoint u+007F **MUST** be encoded because they have special meanings in various systems, or are problematic in certain circumstances.
 
 Below is a table of all non-alphanumeric characters from codepoint u+0020 to u+007E:
@@ -133,24 +133,24 @@ Below is a table of all non-alphanumeric characters from codepoint u+0020 to u+0
 #### Higher Unicode Concerns
 
 Bidirectional control characters **SHOULD** be encoded (security: deceptive filenames):
-- u+200E LEFT-TO-RIGHT MARK
-- u+200F RIGHT-TO-LEFT MARK
-- u+202A-u+202E (LTR/RTL embedding, override, pop directional formatting)
-- u+2066-u+2069 (LTR/RTL isolate, first strong isolate, pop directional isolate)
+- **u+200E** LEFT-TO-RIGHT MARK
+- **u+200F** RIGHT-TO-LEFT MARK
+- **u+202A-u+202E** (LTR/RTL embedding, override, pop directional formatting)
+- **u+2066-u+2069** (LTR/RTL isolate, first strong isolate, pop directional isolate)
 
 Zero-width and invisible format characters **SHOULD** be encoded (security: could create visually indistinguishable filenames):
-- u+00AD SOFT HYPHEN
-- u+200B ZERO WIDTH SPACE
-- u+200C ZERO WIDTH NON-JOINER
-- u+200D ZERO WIDTH JOINER
-- u+2060 WORD JOINER
-- u+FEFF BOM / ZERO WIDTH NO-BREAK SPACE
+- **u+00AD** SOFT HYPHEN
+- **u+200B** ZERO WIDTH SPACE
+- **u+200C** ZERO WIDTH NON-JOINER
+- **u+200D** ZERO WIDTH JOINER
+- **u+2060** WORD JOINER
+- **u+FEFF** BOM / ZERO WIDTH NO-BREAK SPACE
 
 Interlinear annotation characters **SHOULD** be encoded:
-- u+FFF9-u+FFFB
+- **u+FFF9-u+FFFB**
 
 Tag characters **SHOULD** be encoded:
-- u+E0001-u+E007F
+- **u+E0001-u+E007F**
 
 **Note**: The replacement character (u+FFFD) does not require encoding, but its presence in a filename typically indicates a prior encoding error.
 
