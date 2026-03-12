@@ -56,13 +56,13 @@ Decoders **MUST** recognize both shortcut and hex forms. Encoders **CAN** use ei
 | `^^`     | `^`  | u+005E    | Self-escape       |
 | `^_`     | ` `  | u+0020    | Underscore=space  |
 | `^-`     | `=`  | u+003D    | Horizontal line   |
-| `` ^` `` | `+`  | u+002B    | —                 |
+| `` ^` `` | `+`  | u+002B    |                   |
 | `^{`     | `(`  | u+0028    | Opening bracket   |
 | `^}`     | `)`  | u+0029    | Closing bracket   |
 | `^g`     | `>`  | u+003E    | **G**reater than  |
 | `^h`     | `#`  | u+0023    | **H**ash          |
 | `^i`     | `!`  | u+0021    | Excla**i**m       |
-| `^j`     | `'`  | u+0027    | —                 |
+| `^j`     | `'`  | u+0027    |                   |
 | `^k`     | `:`  | u+003A    | **K**olon         |
 | `^l`     | `<`  | u+003C    | **L**ess than     |
 | `^m`     | `%`  | u+0025    | Per**m**ille      |
@@ -157,9 +157,9 @@ Tag characters **SHOULD** be encoded:
 ### Examples
 
 * `^x5927^x5207^x306A^x30D5^x30A1^x30A4^x30EB.doc` (`大切なファイル.doc`)
-* `^usecret^u-data.bin` (`"secret"-data.bin`) — using `^u` shortcut for `"`
+* `^usecret^u-data.bin` (`"secret"-data.bin`) (using `^u` shortcut for `"`)
 * `^y1F607.txt` (`😇.txt`)
-* `https^k^s^sexample.org^sindex.html` (`https://example.org/index.html`) — using shortcuts for `:` and `/`
+* `https^k^s^sexample.org^sindex.html` (`https://example.org/index.html`) (using shortcuts for `:` and `/`)
 
 
 
