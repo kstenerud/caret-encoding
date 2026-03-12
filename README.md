@@ -30,7 +30,9 @@ Terms and Conventions
 Encoding
 --------
 
-A caret-encoded Unicode codepoint is represented as a character sequence beginning with the caret (`^`) character, followed by an optional modifier character, and finally a sequence of hexadecimal digits (`0`-`9`, `a`-`f`, `A`-`F`) representing the codepoint.
+A caret-encoded Unicode codepoint is represented as a character sequence beginning with the caret (`^`) character, followed by either a single shortcut character or a hex sequence. The hex sequence consists of an optional modifier character and a series of hexadecimal digits (`0`-`9`, `a`-`f`, `A`-`F`) representing the codepoint.
+
+#### Hex Sequences
 
 If no modifier character is present, only two hexadecimal digits follow; otherwise more hexadecimal digits follow according to the following table:
 
@@ -41,6 +43,37 @@ If no modifier character is present, only two hexadecimal digits follow; otherwi
 | `^`       | `x` or `X` | 4           | `^x2021` (`‡`)                  |
 | `^`       | `y` or `Y` | 5           | `^y1D120` (`𝄠`)                 |
 | `^`       | `z` or `Z` | 6           | `^z10ABCD` (user-defined value) |
+
+#### Shortcuts
+
+Commonly encoded characters have single-character shortcuts to improve readability. Both shortcut and hex forms are valid and equivalent. Letter shortcuts are case-insensitive (e.g. `^S` = `^s` = `^2F`).
+
+Decoders **MUST** recognize both shortcut and hex forms. Encoders **CAN** use either form.
+
+| Shortcut | Char | Codepoint | Mnemonic          |
+|----------|------|-----------|-------------------|
+| `^^`     | `^`  | u+005E    | Self-escape       |
+| `^_`     | ` `  | u+0020    | Underscore=space  |
+| `^-`     | `=`  | u+003D    | Horizontal line   |
+| `` ^` `` | `+`  | u+002B    | —                 |
+| `^{`     | `(`  | u+0028    | Opening bracket   |
+| `^}`     | `)`  | u+0029    | Closing bracket   |
+| `^g`     | `>`  | u+003E    | **G**reater than  |
+| `^h`     | `#`  | u+0023    | **H**ash          |
+| `^i`     | `!`  | u+0021    | Excla**i**m       |
+| `^j`     | `'`  | u+0027    | —                 |
+| `^k`     | `:`  | u+003A    | **K**olon         |
+| `^l`     | `<`  | u+003C    | **L**ess than     |
+| `^m`     | `%`  | u+0025    | Per**m**ille      |
+| `^n`     | `&`  | u+0026    | A**n**d           |
+| `^o`     | `@`  | u+0040    | R**o**und-a       |
+| `^p`     | `\|` | u+007C    | **P**ipe          |
+| `^q`     | `?`  | u+003F    | **Q**uestion      |
+| `^r`     | `\`  | u+005C    | **R**everse slash |
+| `^s`     | `/`  | u+002F    | **S**lash         |
+| `^t`     | `*`  | u+002A    | S**t**ar          |
+| `^u`     | `"`  | u+0022    | Q**u**ote         |
+| `^v`     | `$`  | u+0024    | **V**alue         |
 
 ### Encoding Rules
 
@@ -96,8 +129,9 @@ Below is a table of all non-alphanumeric characters from codepoint u+0020 to u+0
 ### Examples
 
 * `^x5927^x5207^x306A^x30D5^x30A1^x30A4^x30EB.doc` (`大切なファイル.doc`)
-* `^22secret^22-data.bin` (`"secret"-data.bin`)
+* `^usecret^u-data.bin` (`"secret"-data.bin`) — using `^u` shortcut for `"`
 * `^y1F607.txt` (`😇.txt`)
+* `https^k^s^sexample.org^sindex.html` (`https://example.org/index.html`) — using shortcuts for `:` and `/`
 
 
 
@@ -114,9 +148,9 @@ Why not use Percent-Encoding instead?
 | Format                 | Representation                                                   |
 |------------------------|------------------------------------------------------------------|
 | Logical File Name      | `https://example.org/index.html`                                 |
-| Caret-Encoded          | `https^3A^2F^2Fexample.org^2Findex.html`                         |
+| Caret-Encoded          | `https^k^s^sexample.org^sindex.html`                             |
 | Percent-Encoded        | `https^%A%2F%2Fexample.org%2Findex.html`                         |
-| Caret-Encoded in URI   | `file:///path/to/https^3A^2F^2Fexample.org^2Findex.html`         |
+| Caret-Encoded in URI   | `file:///path/to/https^k^s^sexample.org^sindex.html`             |
 | Percent-Encoded in URI | `file:///path/to/https%253A%252F%252Fexample.org%252Findex.html` |
 
 Also, a separate filename encoding makes the intent clear.
@@ -132,8 +166,9 @@ dogma_v1 utf-8
 - reference   = https://github.com/kstenerud/caret-encoding
 - dogma       = https://github.com/kstenerud/dogma/blob/master/v1/dogma_v1.0.md
 
-encoded_codepoint = initiator
-                  & var(type, (W | X | Y | Z)?)
+encoded_codepoint = initiator & (shortcut | hex_sequence);
+
+hex_sequence      = var(type, (W | X | Y | Z)?)
                   & hex_digit{2}
                   & [
                          type = W: hex_digit{1};
@@ -141,6 +176,12 @@ encoded_codepoint = initiator
                          type = Y: hex_digit{3};
                          type = Z: hex_digit{4};
                   ];
+
+shortcut          = '^' | '_' | '-' | '`' | '{' | '}'
+                  | 'g' | 'G' | 'h' | 'H' | 'i' | 'I' | 'j' | 'J'
+                  | 'k' | 'K' | 'l' | 'L' | 'm' | 'M' | 'n' | 'N'
+                  | 'o' | 'O' | 'p' | 'P' | 'q' | 'Q' | 'r' | 'R'
+                  | 's' | 'S' | 't' | 'T' | 'u' | 'U' | 'v' | 'V';
 
 initiator         = '^';
 W                 = 'w' | 'W';

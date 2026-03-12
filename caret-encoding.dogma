@@ -4,8 +4,9 @@ dogma_v1 utf-8
 - reference   = https://github.com/kstenerud/caret-encoding
 - dogma       = https://github.com/kstenerud/dogma/blob/master/v1/dogma_v1.0.md
 
-encoded_codepoint = initiator
-                  & var(type, (W | X | Y | Z)?)
+encoded_codepoint = initiator & (shortcut | hex_sequence);
+
+hex_sequence      = var(type, (W | X | Y | Z)?)
                   & hex_digit{2}
                   & [
                          type = W: hex_digit{1};
@@ -13,6 +14,12 @@ encoded_codepoint = initiator
                          type = Y: hex_digit{3};
                          type = Z: hex_digit{4};
                   ];
+
+shortcut          = '^' | '_' | '-' | '`' | '{' | '}'
+                  | 'g' | 'G' | 'h' | 'H' | 'i' | 'I' | 'j' | 'J'
+                  | 'k' | 'K' | 'l' | 'L' | 'm' | 'M' | 'n' | 'N'
+                  | 'o' | 'O' | 'p' | 'P' | 'q' | 'Q' | 'r' | 'R'
+                  | 's' | 'S' | 't' | 'T' | 'u' | 'U' | 'v' | 'V';
 
 initiator         = '^';
 W                 = 'w' | 'W';
