@@ -1,15 +1,13 @@
 Caret-Encoding
 ==============
 
-Caret-Encoding is an escape-based encoding scheme that allows Unicode codepoints to be represented numerically in cases where the actual codepoint itself cannot be used for some reason.
+Caret-Encoding is an escape-based character encoding scheme that allows any Unicode codepoint to be represented by alternative means in cases where it can't be used unmodified for some reason.
 
-This could be due to:
+The primary use case is for representing arbitrary codepoints in file names or URLs, but it can be useful in many situations:
 
 - Missing or incomplete Unicode support
-- Codepoints that are restricted in a particular medium
+- Codepoints that are restricted in a particular medium or domain
 - Representing a codepoint that is already being used as a delimiter
-
-Caret-Encoding's primary use case is for representing arbitrary codepoints in file names, but it could also be used in other mediums that restrict otherwise allowable characters.
 
 
 ----------------------------------------------------------------------------------------------------
@@ -23,6 +21,7 @@ Terms and Conventions
 | ---------------- | ------------------------------------------------------------------------------------------------ |
 | **MUST (NOT)**   | If this directive is not adhered to, the document or implementation is invalid.                  |
 | **SHOULD (NOT)** | Every effort should be made to follow this directive, but it's still conformant if not followed. |
+| **MAY (NOT)**    | It is up to the implementation to decide whether to do something or not.                         |
 | **CAN**          | Refers to a possibility which **MUST** be accommodated by the implementation.                    |
 
 -----------------------------------------------------------------------------------------------------------------------
@@ -31,50 +30,50 @@ Terms and Conventions
 Encoding
 --------
 
-A caret-encoded Unicode codepoint is represented as a character sequence beginning with the caret (`^`) character, followed by either a single shortcut character or a hex sequence. The hex sequence consists of an optional modifier character and a series of hexadecimal digits (`0`-`9`, `a`-`f`, `A`-`F`) representing the codepoint.
+A caret-encoded Unicode codepoint is represented as a character sequence beginning with the caret (`^`) character, followed by a type character that determines which codepoint is being represented.
 
-#### Hex Sequences
+### Hex Sequences
 
-If no modifier character is present, only two hexadecimal digits follow. If a modifier character from `w` to `z` (case-insensitive) is present, more hexadecimal digits follow according to the following table:
+Hex sequences represent a Unicode codepoint by its hexadecimal value.
 
-| Initiator | Modifier   | Digit Count | Example                         |
-|-----------|------------|-------------|---------------------------------|
-| `^`       |            | 2           | `^2F` (`/`)                     |
-| `^`       | `w` or `W` | 3           | `^w141` (`Ł`)                   |
-| `^`       | `x` or `X` | 4           | `^x2021` (`‡`)                  |
-| `^`       | `y` or `Y` | 5           | `^y1D120` (`𝄠`)                 |
-| `^`       | `z` or `Z` | 6           | `^z10ABCD` (user-defined value) |
+| Initiator | Type Character                | Digit Count | Example                         |
+|-----------|-------------------------------|-------------|---------------------------------|
+| `^`       | `0`-`9` or `a`-`f` or `A`-`F` | 2           | `^2F` (`/`)                     |
+| `^`       | `w` or `W`                    | 3           | `^w141` (`Ł`)                   |
+| `^`       | `x` or `X`                    | 4           | `^x2021` (`‡`)                  |
+| `^`       | `y` or `Y`                    | 5           | `^y1D120` (`𝄠`)                 |
+| `^`       | `z` or `Z`                    | 6           | `^z10ABCD` (user-defined value) |
 
-#### Shortcuts
+### Shortcuts
 
-Commonly encoded characters have single-character shortcuts to reduce length requirements and improve readability. Both shortcut and hex forms are valid and equivalent. Letter shortcuts are case-insensitive (e.g. `^S` = `^s` = `^2F`).
+Commonly encoded codepoints have shortcut type characters to reduce length requirements and improve readability. Both shortcut and hex forms are valid and equivalent. Letter shortcuts are case-insensitive (e.g. `^S` = `^s` = `^2F`).
 
-Decoders **MUST** recognize both shortcut and hex forms. Encoders **CAN** use either form.
+Decoders **MUST** recognize both shortcut and hex forms. Encoders **MAY** use either form.
 
-| Shortcut | Char | Codepoint | Mnemonic          |
-|----------|------|-----------|-------------------|
-| `^^`     | `^`  | u+005E    | Self-escape       |
-| `^_`     | ` `  | u+0020    | Underscore=space  |
-| `^-`     | `=`  | u+003D    | Horizontal line   |
-| `` ^` `` | `+`  | u+002B    |                   |
-| `^{`     | `(`  | u+0028    | Opening bracket   |
-| `^}`     | `)`  | u+0029    | Closing bracket   |
-| `^g`     | `>`  | u+003E    | **G**reater than  |
-| `^h`     | `#`  | u+0023    | **H**ash          |
-| `^i`     | `!`  | u+0021    | Excla**i**m       |
-| `^j`     | `'`  | u+0027    |                   |
-| `^k`     | `:`  | u+003A    | **K**olon         |
-| `^l`     | `<`  | u+003C    | **L**ess than     |
-| `^m`     | `%`  | u+0025    | Per**m**ille      |
-| `^n`     | `&`  | u+0026    | A**n**d           |
-| `^o`     | `@`  | u+0040    | R**o**und-a       |
-| `^p`     | `\|` | u+007C    | **P**ipe          |
-| `^q`     | `?`  | u+003F    | **Q**uestion      |
-| `^r`     | `\`  | u+005C    | **R**everse slash |
-| `^s`     | `/`  | u+002F    | **S**lash         |
-| `^t`     | `*`  | u+002A    | S**t**ar          |
-| `^u`     | `"`  | u+0022    | Q**u**ote         |
-| `^v`     | `$`  | u+0024    | **V**alue         |
+| Shortcut | Represented Char | Codepoint | Mnemonic          |
+|----------|------------------|-----------|-------------------|
+| `^^`     | `^`              | u+005E    | Self-escape       |
+| `^_`     | ` `              | u+0020    | Underscore=space  |
+| `^-`     | `=`              | u+003D    | Horizontal line   |
+| `` ^` `` | `+`              | u+002B    |                   |
+| `^{`     | `(`              | u+0028    | Opening bracket   |
+| `^}`     | `)`              | u+0029    | Closing bracket   |
+| `^g`     | `>`              | u+003E    | **G**reater than  |
+| `^h`     | `#`              | u+0023    | **H**ash          |
+| `^i`     | `!`              | u+0021    | Excla**i**m       |
+| `^j`     | `'`              | u+0027    |                   |
+| `^k`     | `:`              | u+003A    | **K**olon         |
+| `^l`     | `<`              | u+003C    | **L**ess than     |
+| `^m`     | `%`              | u+0025    | Per**m**ille      |
+| `^n`     | `&`              | u+0026    | A**n**d           |
+| `^o`     | `@`              | u+0040    | R**o**und-a       |
+| `^p`     | `\|`             | u+007C    | **P**ipe          |
+| `^q`     | `?`              | u+003F    | **Q**uestion      |
+| `^r`     | `\`              | u+005C    | **R**everse slash |
+| `^s`     | `/`              | u+002F    | **S**lash         |
+| `^t`     | `*`              | u+002A    | S**t**ar          |
+| `^u`     | `"`              | u+0022    | Q**u**ote         |
+| `^v`     | `$`              | u+0024    | **V**alue         |
 
 ### Encoding Rules
 
@@ -156,10 +155,10 @@ Tag characters **SHOULD** be encoded:
 
 ### Examples
 
-* `^x5927^x5207^x306A^x30D5^x30A1^x30A4^x30EB.doc` (`大切なファイル.doc`)
-* `^usecret^u-data.bin` (`"secret"-data.bin`) (using `^u` shortcut for `"`)
-* `^y1F607.txt` (`😇.txt`)
-* `https^k^s^sexample.org^sindex.html` (`https://example.org/index.html`) (using shortcuts for `:` and `/`)
+* `^x5927^x5207^x306A^x30D5^x30A1^x30A4^x30EB.doc`: `大切なファイル.doc`
+* `^usecret^u-data.bin`: `"secret"-data.bin` (using `^u` shortcut for `"`)
+* `^y1F607.txt`: `😇.txt`
+* `https^k^s^sexample.org^sindex.html`: `https://example.org/index.html` (using shortcuts for `:` and `/`)
 
 
 
@@ -170,14 +169,14 @@ Why not use Percent-Encoding instead?
 [Percent-Encoding](https://datatracker.ietf.org/doc/html/rfc3986#page-12) is designed specifically for encoding data into a URI. Although it could in theory be applied to filenames, there are problems:
 
 - Percent-Encoding doesn't restrict some symbols that are problematic in filenames.
-- Percent-Encoding is limited to octets rather than codepoints, which has led to ambiguouity and incompatibilities among implementations.
+- Percent-Encoding is limited to octets rather than codepoints, which has led to ambiguity and incompatibilities among implementations.
 - Percent-encoded filenames would generate even more bloat when represented as URIs because the escape character would itself have to be escaped:
 
 | Format                 | Representation                                                   |
 |------------------------|------------------------------------------------------------------|
 | Logical File Name      | `https://example.org/index.html`                                 |
 | Caret-Encoded          | `https^k^s^sexample.org^sindex.html`                             |
-| Percent-Encoded        | `https^%A%2F%2Fexample.org%2Findex.html`                         |
+| Percent-Encoded        | `https%3A%2F%2Fexample.org%2Findex.html`                         |
 | Caret-Encoded in URI   | `file:///path/to/https^k^s^sexample.org^sindex.html`             |
 | Percent-Encoded in URI | `file:///path/to/https%253A%252F%252Fexample.org%252Findex.html` |
 
@@ -234,4 +233,4 @@ License
 
 Copyright (c) 2025 Karl Stenerud. All rights reserved.
 
-Distributed under the [Creative Commons Attribution License](https://creativecommons.org/licenses/by/4.0/legalcode) ([license deed](https://creativecommons.org/licenses/by/4.0).
+Distributed under the [Creative Commons Attribution License](https://creativecommons.org/licenses/by/4.0/legalcode) ([license deed](https://creativecommons.org/licenses/by/4.0)).
