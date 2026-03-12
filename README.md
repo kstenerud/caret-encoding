@@ -47,7 +47,7 @@ If no modifier character is present, only two hexadecimal digits follow. If a mo
 
 #### Shortcuts
 
-Commonly encoded characters have single-character shortcuts to improve readability. Both shortcut and hex forms are valid and equivalent. Letter shortcuts are case-insensitive (e.g. `^S` = `^s` = `^2F`).
+Commonly encoded characters have single-character shortcuts to reduce length requirements and improve readability. Both shortcut and hex forms are valid and equivalent. Letter shortcuts are case-insensitive (e.g. `^S` = `^s` = `^2F`).
 
 Decoders **MUST** recognize both shortcut and hex forms. Encoders **CAN** use either form.
 
