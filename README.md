@@ -132,13 +132,13 @@ Below is a table of all non-alphanumeric characters from codepoint u+0020 to u+0
 
 #### Higher Unicode Concerns
 
-Bidirectional control characters **SHOULD** be encoded (security: deceptive filenames):
+Bidirectional control characters **SHOULD** be encoded (**security**: deceptive filenames):
 - **u+200E** LEFT-TO-RIGHT MARK
 - **u+200F** RIGHT-TO-LEFT MARK
 - **u+202A-u+202E** (LTR/RTL embedding, override, pop directional formatting)
 - **u+2066-u+2069** (LTR/RTL isolate, first strong isolate, pop directional isolate)
 
-Zero-width and invisible format characters **SHOULD** be encoded (security: could create visually indistinguishable filenames):
+Zero-width and invisible format characters **SHOULD** be encoded (**security**: could create visually indistinguishable filenames):
 - **u+00AD** SOFT HYPHEN
 - **u+200B** ZERO WIDTH SPACE
 - **u+200C** ZERO WIDTH NON-JOINER
